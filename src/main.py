@@ -377,8 +377,8 @@ def display_diameters(network, filename):
 
 def display_centralities(network, filename):
 
-    in_json_file_closeness = open("results/closeness_centralities.json", "r")
-    in_json_file_betweenness = open("results/betweenness_centralities.json", "r")
+    in_json_file_closeness = open("../outputs/closeness_centralities.json", "r")
+    in_json_file_betweenness = open("../outputs/betweenness_centralities.json", "r")
 
     closeness_centralities = json.load(in_json_file_closeness)
     betweenness_centralities = json.load(in_json_file_betweenness)
@@ -409,7 +409,7 @@ def display_centralities(network, filename):
     mpl.pyplot.xticks(rotation=45)
 
     mpl.pyplot.tight_layout()
-    out_filename = "results/centralities.png"
+    out_filename = "../outputs/centralities.png"
     mpl.pyplot.savefig(out_filename)
 
 
@@ -437,4 +437,4 @@ def main():
 
 
 if __name__ == '__main__':
-    display_vote_ranks(csv_to_network("musae_git_edges.csv"), "results/vote_ranks.json")
+    display_vote_ranks(csv_to_network("../inputs/musae_git_edges.csv"), "../outputs/vote_ranks.json")

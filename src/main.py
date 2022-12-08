@@ -67,6 +67,9 @@ def get_results(csv_filename, result_name_to_filename):
         elif result_name == "hubs":
             f = get_hubs
 
+        elif result_name == "effective_size":
+            f = get_effective_size
+
         else:
             f = None
 
@@ -152,6 +155,12 @@ def get_hubs(network, filename):
     hubs = results[0]
     out_json_file = open(filename, "w")
     json.dump(hubs, out_json_file)
+
+def get_effective_size(network, filename):
+
+    effective_size = nx.effective_size(network)
+    out_json_file = open(filename, "w")
+    json.dump(effective_size, out_json_file)
 
 def display_results(csv_filename, result_name_to_filename):
 
@@ -412,7 +421,6 @@ def display_centralities(network, filename):
     out_filename = "../outputs/centralities.png"
     mpl.pyplot.savefig(out_filename)
 
-
 def main():
 
     argv = sys.argv
@@ -437,4 +445,4 @@ def main():
 
 
 if __name__ == '__main__':
-    display_vote_ranks(csv_to_network("../inputs/musae_git_edges.csv"), "../outputs/vote_ranks.json")
+    main()

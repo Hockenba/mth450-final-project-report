@@ -10,6 +10,10 @@ import igraph as ig
 import random
 import json
 import statistics
+import networkx.algorithms.community as nac
+
+import numpy as np
+
 
 def csv_to_network(csv_filename):
 
@@ -64,6 +68,18 @@ def get_results(csv_filename, result_name_to_filename):
         elif result_name == "hubs":
             f = get_hubs
 
+        elif result_name == "effective_size":
+            f = get_effective_size
+
+        elif result_name == "communities":
+            f = get_communities
+
+        elif result_name == "edge_connectivity":
+            f = get_edge_connectivity
+
+        elif result_name == "node_connectivity":
+            f = get_node_connectivity
+
         else:
             f = None
 
@@ -75,6 +91,18 @@ def get_results(csv_filename, result_name_to_filename):
     for i in range(0, n):
         p = ps[i]
         p.join()
+
+def get_node_connectivity(network, filename):
+
+    node_connectivity = nx.node_connectivity(network)
+    out_json_file = open(filename, "w")
+    json.dump(node_connectivity, out_json_file)
+
+def get_edge_connectivity(network, filename):
+
+    edge_connectivity = nx.edge_connectivity(network)
+    out_json_file = open(filename, "w")
+    json.dump(edge_connectivity, out_json_file)
 
 def get_rich_club_coefficients(network, filename):
 
@@ -97,6 +125,20 @@ def get_degree_frequencies(network, filename):
 
     out_json_file = open(filename, "w")
     json.dump(degree_to_frequency, out_json_file)
+
+def get_communities(network, filename):
+
+    communities = nac.greedy_modularity_communities(network)
+    communities_length = len(communities)
+
+    community_result = {}
+
+    for i in range(0, communities_length):
+        community = communities[i]
+        community_result[i] = list(community)
+
+    out_json_file = open(filename, "w")
+    json.dump(community_result, out_json_file)
 
 def get_vote_ranks(network, filename):
 
@@ -149,6 +191,12 @@ def get_hubs(network, filename):
     hubs = results[0]
     out_json_file = open(filename, "w")
     json.dump(hubs, out_json_file)
+
+def get_effective_size(network, filename):
+
+    effective_size = nx.effective_size(network)
+    out_json_file = open(filename, "w")
+    json.dump(effective_size, out_json_file)
 
 def display_results(csv_filename, result_name_to_filename):
 
@@ -258,9 +306,15 @@ def display_degree_frequencies(network, filename):
     min_degree = min(all_degrees)
     sd = statistics.stdev(all_degrees)
     median = statistics.median(all_degrees)
+    fq = np.quantile(all_degrees, 0.25)
+    sq = np.quantile(all_degrees, 0.50)
+    tq = np.quantile(all_degrees, 0.75)
 
     print(median)
     print(sd)
+    print(fq)
+    print(sq)
+    print(tq)
     print(min_degree)
     print(max_degree)
     print(average_degree)
@@ -301,6 +355,15 @@ def display_vote_ranks(network, filename):
     vote_ranks = json.load(in_json_file)
     ranks = list(range(0, n_degrees))
     degrees = [degrees[vote_ranks[i]] for i in range(0, n_degrees)]
+
+    average_degree = sum(degrees) / len(degrees)
+    max_degree = max(degrees)
+    min_degree = min(degrees)
+    sd = statistics.stdev(degrees)
+    median = statistics.median(degrees)
+    fq = np.quantile(degrees, 0.25)
+    sq = np.quantile(degrees, 0.50)
+    tq = np.quantile(degrees, 0.75)
 
     fig, ax = mpl.pyplot.subplots(dpi=150)
 
@@ -359,8 +422,8 @@ def display_diameters(network, filename):
 
 def display_centralities(network, filename):
 
-    in_json_file_closeness = open("results/closeness_centralities.json", "r")
-    in_json_file_betweenness = open("results/betweenness_centralities.json", "r")
+    in_json_file_closeness = open("../outputs/closeness_centralities.json", "r")
+    in_json_file_betweenness = open("../outputs/betweenness_centralities.json", "r")
 
     closeness_centralities = json.load(in_json_file_closeness)
     betweenness_centralities = json.load(in_json_file_betweenness)
@@ -391,9 +454,8 @@ def display_centralities(network, filename):
     mpl.pyplot.xticks(rotation=45)
 
     mpl.pyplot.tight_layout()
-    out_filename = "centralities.png"
+    out_filename = "../outputs/centralities.png"
     mpl.pyplot.savefig(out_filename)
-
 
 def main():
 
@@ -419,4 +481,4 @@ def main():
 
 
 if __name__ == '__main__':
-    display_degree_frequencies(csv_to_network("musae_git_edges.csv"), "results/degree_frequencies.json")
+    main()

@@ -10,6 +10,7 @@ import igraph as ig
 import random
 import json
 import statistics
+import networkx.algorithms.community as nac
 
 import numpy as np
 
@@ -70,6 +71,15 @@ def get_results(csv_filename, result_name_to_filename):
         elif result_name == "effective_size":
             f = get_effective_size
 
+        elif result_name == "communities":
+            f = get_communities
+
+        elif result_name == "edge_connectivity":
+            f = get_edge_connectivity
+
+        elif result_name == "node_connectivity":
+            f = get_node_connectivity
+
         else:
             f = None
 
@@ -81,6 +91,18 @@ def get_results(csv_filename, result_name_to_filename):
     for i in range(0, n):
         p = ps[i]
         p.join()
+
+def get_node_connectivity(network, filename):
+
+    node_connectivity = nx.node_connectivity(network)
+    out_json_file = open(filename, "w")
+    json.dump(node_connectivity, out_json_file)
+
+def get_edge_connectivity(network, filename):
+
+    edge_connectivity = nx.edge_connectivity(network)
+    out_json_file = open(filename, "w")
+    json.dump(edge_connectivity, out_json_file)
 
 def get_rich_club_coefficients(network, filename):
 
@@ -103,6 +125,20 @@ def get_degree_frequencies(network, filename):
 
     out_json_file = open(filename, "w")
     json.dump(degree_to_frequency, out_json_file)
+
+def get_communities(network, filename):
+
+    communities = nac.greedy_modularity_communities(network)
+    communities_length = len(communities)
+
+    community_result = {}
+
+    for i in range(0, communities_length):
+        community = communities[i]
+        community_result[i] = list(community)
+
+    out_json_file = open(filename, "w")
+    json.dump(community_result, out_json_file)
 
 def get_vote_ranks(network, filename):
 

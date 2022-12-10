@@ -231,6 +231,9 @@ def display_results(csv_filename, result_name_to_filename):
         elif result_name == "centralities":
             f = display_centralities
 
+        elif result_name == "communities":
+            f = display_communities
+
         else:
             continue
 
@@ -456,6 +459,22 @@ def display_centralities(network, filename):
     mpl.pyplot.tight_layout()
     out_filename = "../outputs/centralities.png"
     mpl.pyplot.savefig(out_filename)
+
+
+def display_communities(network, filename):
+
+    in_json_file = open(filename, "r")
+    communities = json.load(in_json_file)
+
+    n = len(list(nx.nodes(network)))
+    communities_len = len(communities)
+    numberOfCommunitiesToN = float(communities_len) / float(n)
+
+    results = {
+        "numberOfCommunities": communities_len,
+        "numberOfCommunitiesToN": numberOfCommunitiesToN
+    }
+
 
 def main():
 

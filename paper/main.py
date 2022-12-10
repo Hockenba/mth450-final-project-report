@@ -16,21 +16,18 @@ import numpy as np
 
 
 def csv_to_network(csv_filename):
-
     network = nx.Graph()
 
     with open(csv_filename, 'r', newline='') as csv_file:
-
         lines = csv.reader(csv_file)
 
         for src, dest in lines:
-
             network.add_edge(src, dest)
 
     return network
 
-def get_results(csv_filename, result_name_to_filename):
 
+def get_results(csv_filename, result_name_to_filename):
     network = csv_to_network(csv_filename)
 
     n = len(list(result_name_to_filename.keys()))
@@ -92,26 +89,26 @@ def get_results(csv_filename, result_name_to_filename):
         p = ps[i]
         p.join()
 
-def get_node_connectivity(network, filename):
 
+def get_node_connectivity(network, filename):
     node_connectivity = nx.node_connectivity(network)
     out_json_file = open(filename, "w")
     json.dump(node_connectivity, out_json_file)
 
-def get_edge_connectivity(network, filename):
 
+def get_edge_connectivity(network, filename):
     edge_connectivity = nx.edge_connectivity(network)
     out_json_file = open(filename, "w")
     json.dump(edge_connectivity, out_json_file)
 
-def get_rich_club_coefficients(network, filename):
 
+def get_rich_club_coefficients(network, filename):
     rich_club_coefficients = nx.rich_club_coefficient(network, False)
     out_json_file = open(filename, "w")
     json.dump(rich_club_coefficients, out_json_file)
 
-def get_degree_frequencies(network, filename):
 
+def get_degree_frequencies(network, filename):
     degrees = list(nx.degree(network))
     degree_to_frequency = {}
 
@@ -126,8 +123,8 @@ def get_degree_frequencies(network, filename):
     out_json_file = open(filename, "w")
     json.dump(degree_to_frequency, out_json_file)
 
-def get_communities(network, filename):
 
+def get_communities(network, filename):
     communities = nac.greedy_modularity_communities(network)
     communities_length = len(communities)
 
@@ -140,39 +137,44 @@ def get_communities(network, filename):
     out_json_file = open(filename, "w")
     json.dump(community_result, out_json_file)
 
-def get_vote_ranks(network, filename):
 
+def get_vote_ranks(network, filename):
     vote_ranks = nx.voterank(network)
     out_json_file = open(filename, "w")
     json.dump(vote_ranks, out_json_file)
+
 
 def get_closeness_centralities(network, filename):
     closeness_centralities = nx.closeness_centrality(network)
     out_json_file = open(filename, "w")
     json.dump(closeness_centralities, out_json_file)
 
+
 def get_betweenness_centralities(network, filename):
     betweenness_centralities = nx.betweenness_centrality(network)
     out_json_file = open(filename, "w")
     json.dump(betweenness_centralities, out_json_file)
+
 
 def get_density(network, filename):
     density = nx.density(network)
     out_json_file = open(filename, "w")
     json.dump(density, out_json_file)
 
+
 def get_articulation_points(network, filename):
     articulation_points = list(nx.articulation_points(network))
     out_json_file = open(filename, "w")
     json.dump(articulation_points, out_json_file)
+
 
 def find_diameter_from_src(network, src):
     dest = list(nx.bfs_edges(network, src))[-1][1]
     diameter = nx.shortest_path_length(network, src, dest)
     return diameter
 
-def get_diameters(network, filename):
 
+def get_diameters(network, filename):
     nodes = list(nx.nodes(network))
     n = len(nodes)
     node_to_diameter = {}
@@ -185,21 +187,21 @@ def get_diameters(network, filename):
     out_json_file = open(filename, "w")
     json.dump(node_to_diameter, out_json_file)
 
-def get_hubs(network, filename):
 
+def get_hubs(network, filename):
     results = nx.hits(network)
     hubs = results[0]
     out_json_file = open(filename, "w")
     json.dump(hubs, out_json_file)
 
-def get_effective_size(network, filename):
 
+def get_effective_size(network, filename):
     effective_size = nx.effective_size(network)
     out_json_file = open(filename, "w")
     json.dump(effective_size, out_json_file)
 
-def display_results(csv_filename, result_name_to_filename):
 
+def display_results(csv_filename, result_name_to_filename):
     network = csv_to_network(csv_filename)
 
     n = len(list(result_name_to_filename.keys()))
@@ -249,7 +251,6 @@ def display_results(csv_filename, result_name_to_filename):
 
 
 def display_rich_club_coefficients(network, filename):
-
     in_json_file = open(filename, "r")
     rich_club_coefficients = json.load(in_json_file)
     degrees = list(rich_club_coefficients.keys())
@@ -285,8 +286,8 @@ def display_rich_club_coefficients(network, filename):
     out_filename = filename.split(".")[0] + ".png"
     mpl.pyplot.savefig(out_filename)
 
-def display_degree_frequencies(network, filename):
 
+def display_degree_frequencies(network, filename):
     in_json_file = open(filename, "r")
     degree_to_frequencies = json.load(in_json_file)
     degrees = list(degree_to_frequencies.keys())
@@ -350,8 +351,8 @@ def display_degree_frequencies(network, filename):
     out_filename = filename.split(".")[0] + ".png"
     mpl.pyplot.savefig(out_filename)
 
-def display_vote_ranks(network, filename):
 
+def display_vote_ranks(network, filename):
     n_degrees = 101
     degrees = dict(nx.degree(network))
     in_json_file = open(filename, "r")
@@ -391,12 +392,12 @@ def display_vote_ranks(network, filename):
     out_filename = filename.split(".")[0] + ".png"
     mpl.pyplot.savefig(out_filename)
 
-def display_density(network, filename):
 
+def display_density(network, filename):
     return
 
-def display_articulation_points(network, filename):
 
+def display_articulation_points(network, filename):
     in_json_file = open(filename, "r")
     articulation_points = json.load(in_json_file)
     articulation_points_len = len(articulation_points)
@@ -404,8 +405,8 @@ def display_articulation_points(network, filename):
     out_json_file = open(out_filename, "w")
     json.dump(articulation_points_len, out_json_file)
 
-def display_diameters(network, filename):
 
+def display_diameters(network, filename):
     in_json_file = open(filename, "r")
     diameters_dict = json.load(in_json_file)
     diameters = diameters_dict.values()
@@ -423,8 +424,8 @@ def display_diameters(network, filename):
     out_json_file = open(out_filename, "w")
     json.dump(result_dict, out_json_file)
 
-def display_centralities(network, filename):
 
+def display_centralities(network, filename):
     in_json_file_closeness = open("../outputs/closeness_centralities.json", "r")
     in_json_file_betweenness = open("../outputs/betweenness_centralities.json", "r")
 
@@ -462,7 +463,6 @@ def display_centralities(network, filename):
 
 
 def display_communities(network, filename):
-
     in_json_file = open(filename, "r")
     communities = json.load(in_json_file)
 
@@ -470,14 +470,66 @@ def display_communities(network, filename):
     communities_len = len(communities)
     numberOfCommunitiesToN = float(communities_len) / float(n)
 
-    results = {
+    nodes_of_communities = [0] * communities_len
+    edges_of_communities = [0] * communities_len
+
+    for i in range(0, communities_len):
+        community = communities[str(i)]
+        subgraph = nx.subgraph(network, list(community))
+        nodes = nx.number_of_nodes(subgraph)
+        edges = nx.number_of_edges(subgraph)
+        nodes_of_communities[i] = nodes
+        edges_of_communities[i] = edges
+
+    average_nodes = sum(nodes_of_communities) / len(nodes_of_communities)
+    max_nodes = max(nodes_of_communities)
+    min_nodes = min(nodes_of_communities)
+    sd_nodes = statistics.stdev(nodes_of_communities)
+    median_nodes = statistics.median(nodes_of_communities)
+    fq_nodes = np.quantile(nodes_of_communities, 0.25)
+    sq_nodes = np.quantile(nodes_of_communities, 0.50)
+    tq_nodes = np.quantile(nodes_of_communities, 0.75)
+
+    average_edges = sum(edges_of_communities) / len(edges_of_communities)
+    max_edges = max(edges_of_communities)
+    min_edges = min(edges_of_communities)
+    sd_edges = statistics.stdev(edges_of_communities)
+    median_edges = statistics.median(edges_of_communities)
+    fq_edges = np.quantile(edges_of_communities, 0.25)
+    sq_edges = np.quantile(edges_of_communities, 0.50)
+    tq_edges = np.quantile(edges_of_communities, 0.75)
+
+    stats = {
         "numberOfCommunities": communities_len,
-        "numberOfCommunitiesToN": numberOfCommunitiesToN
+        "numberOfCommunitiesToN": numberOfCommunitiesToN,
+        "nodes": {
+            "average": average_nodes,
+            "max": max_nodes,
+            "min": min_nodes,
+            "sd": sd_nodes,
+            "median": median_nodes,
+            "fq": fq_nodes,
+            "sq": sq_nodes,
+            "tq": tq_nodes,
+        },
+        "edges": {
+            "average": average_edges,
+            "max": max_edges,
+            "min": min_edges,
+            "sd": sd_edges,
+            "median": median_edges,
+            "fq": fq_edges,
+            "sq": sq_edges,
+            "tq": tq_edges,
+        }
     }
+
+    out_filename = filename.split(".")[0] + "_results" + ".json"
+    out_json_file = open(out_filename, "w")
+    json.dump(stats, out_json_file)
 
 
 def main():
-
     argv = sys.argv
 
     if len(argv) < 4:
@@ -500,4 +552,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    display_communities(csv_to_network("inputs/musae_git_edges.csv"), "outputs/communities.json")

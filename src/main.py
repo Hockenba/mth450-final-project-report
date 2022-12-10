@@ -470,10 +470,63 @@ def display_communities(network, filename):
     communities_len = len(communities)
     numberOfCommunitiesToN = float(communities_len) / float(n)
 
-    results = {
+    nodes_of_communities = [0] * communities_len
+    edges_of_communities = [0] * communities_len
+
+    for i in range(0, communities_len):
+        community = communities[str(i)]
+        subgraph = nx.subgraph(network, list(community))
+        nodes = nx.number_of_nodes(subgraph)
+        edges = nx.number_of_edges(subgraph)
+        nodes_of_communities[i] = nodes
+        edges_of_communities[i] = edges
+
+    average_nodes = sum(nodes_of_communities) / len(nodes_of_communities)
+    max_nodes = max(nodes_of_communities)
+    min_nodes = min(nodes_of_communities)
+    sd_nodes = statistics.stdev(nodes_of_communities)
+    median_nodes = statistics.median(nodes_of_communities)
+    fq_nodes = np.quantile(nodes_of_communities, 0.25)
+    sq_nodes = np.quantile(nodes_of_communities, 0.50)
+    tq_nodes = np.quantile(nodes_of_communities, 0.75)
+
+    average_edges = sum(edges_of_communities) / len(edges_of_communities)
+    max_edges = max(edges_of_communities)
+    min_edges = min(edges_of_communities)
+    sd_edges = statistics.stdev(edges_of_communities)
+    median_edges = statistics.median(edges_of_communities)
+    fq_edges = np.quantile(edges_of_communities, 0.25)
+    sq_edges = np.quantile(edges_of_communities, 0.50)
+    tq_edges = np.quantile(edges_of_communities, 0.75)
+
+    stats = {
         "numberOfCommunities": communities_len,
-        "numberOfCommunitiesToN": numberOfCommunitiesToN
+        "numberOfCommunitiesToN": numberOfCommunitiesToN,
+        "nodes": {
+            "average": average_nodes,
+            "max": max_nodes,
+            "min": min_nodes,
+            "sd": sd_nodes,
+            "median": median_nodes,
+            "fq": fq_nodes,
+            "sq": sq_nodes,
+            "tq": tq_nodes,
+        },
+        "edges": {
+            "average": average_edges,
+            "max": max_edges,
+            "min": min_edges,
+            "sd": sd_edges,
+            "median": median_edges,
+            "fq": fq_edges,
+            "sq": sq_edges,
+            "tq": tq_edges,
+        }
     }
+
+    out_filename = filename.split(".")[0] + "_results" + ".json"
+    out_json_file = open(out_filename, "w")
+    json.dump(stats, out_json_file)
 
 
 def main():
@@ -499,4 +552,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    display_communities(csv_to_network("inputs/musae_git_edges.csv"), "outputs/communities.json")

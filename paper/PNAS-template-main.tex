@@ -55,7 +55,7 @@ Social networks involving social actors. Social networks are so ubiquitous becau
   \item Do developers tend to form close-knit communities?
   \item Are there any islands or is the network completely connected?
   \item Does there exist clear hubs in the network?
- %\item How does the number of distinct communities and their size scale with %the numbers of developers and connections?
+  \item Is the network very cohesive? That is, are most developers part of the same large community?
 \end{enumerate}
 
 \subsection{Hypothesizes}
@@ -94,9 +94,9 @@ I think it is likely that the network will be completely connected. As I mention
 
 I suspect that there will be very clear hubs in the network. As I mentioned, in my experience, most people on GitHub follow at least one of the key projects such as the Linux project on GitHub. Thus, these kinds of famous projects and people I believe will appear as clear hubs in the network.
 
-%\subsubsection{How does the number of distinct communities and their size scale %with the numbers of developers and connections}
-%
-%Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor %incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis %nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. %Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu %fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in %culpa qui officia deserunt mollit anim id est laborum.
+\subsubsection{Is the Network Very Cohesive. That Is, Are Most Developers Part of the Same Large Community}
+
+If I had to guess, I would suggest that the network is decently cohesive. That is, most developers are part of the 1 to 3 communities that compromise the bulk of the number of developers in the network. I am under this assumption because I believe that the developer world is a small world. I think most developers could easily be grouped into a small group of communities based on the data that is being considered. I think it is probable that there will be many offshot communities that are relatively small though, since there will always be developers that do their own thing from the main groups.
 
 \section{Materials and Methods}{
 Since, we are dealing with a applied data, the methods by which research was conducted can be broken up into a finite orders set of steps. These steps are, in order: data acquisition, data processing, data analysis, and data visualization. Data acquisition described how the data was collected both by myself and its original creators as well what the raw data contains. Data processing deals with how the data was processed for easier future analysis. Data analysis details what and how information was extracted from the data. Data visualization deals with how the information that was extracted from the data analysis section was displayed such as to figures and tables.
@@ -155,7 +155,7 @@ where \textit{m} is the number of edges in the network and \textit{n} is the num
 \begin{figure}
 \centering
 \includegraphics[width=.8\linewidth]{vote_ranks}
-\caption{The ranking (x-axis) of the nodes compared to their degree (y-axis) where the rank is inclusively between 0 and 100. Smaller numbers correspond to greater rank while higher numbers correspond to lesser ranks. Only up to rank 100 was included because it would be impossible to visualize the rest of the ranks in one figure and the pattern should be obvious from the first 101 ranks. Ranking was determined using the VoteRank algorithm \cite{networkxvoteranks}.
+\caption{The ranking (x-axis) of the nodes compared to their degree (y-axis) where $0 \le rank \le 100$. Smaller numbers correspond to greater rank while higher numbers correspond to lesser ranks. Only up to rank 100 was included because it would be impossible to visualize nicely and the pattern should be obvious with the given range. Ranking was determined using the VoteRank algorithm \cite{networkxvoteranks}.
 }
 \label{fig:vote_ranks}
 \end{figure}
@@ -168,6 +168,16 @@ where \textit{m} is the number of edges in the network and \textit{n} is the num
 \caption{A scatter plot of the closeness centrality (x-axis) to the betweenness centrality (y-axis) of the nodes in the network. The closeness centrality is defined as $C(u) =\frac{n-1}{\sum_{v=1}^{n-1}d(u, v)}$ \cite{networkxclosenesscentrality}. $d(v, u)$ is the shortest-path distance between $v$ and $u$, and $n-1$ is the number of nodes reachable from $u$ \cite{networkxclosenesscentrality}. The betweenness centrality is defined as $e_{B}(v)=\sum_{s,t\in V}^{}\frac{\sigma(s, t|v)}{\sigma(s, t)}$ \cite{networkxbetweennesscentrality}. $V$ is the set of nodes, $\sigma(s, t)$ is the number of shortest $(s, t)$-paths, and $\sigma(s, t|v)$ is the number of those paths passing through some node $v$ other than $s, t$ \cite{networkxbetweennesscentrality}.
 }
 \label{fig:centralities}
+\end{figure}
+
+\subsection{Communities} Statistics involving the community structures of the network are articulated in Fig. \ref{fig:community_table}.
+
+\begin{figure}
+\centering
+\includegraphics[width=.8\linewidth]{community_table}
+\caption{The first column provides general statistics about the communities. The second column gives the node statistics about the communities. The second column gives the edges statistics about the communities. The communities were derived using the Clauset-Newman-Moore Greedy Modularity Maximization algorithm \cite{networkxcommunities}.
+}
+\label{fig:community_table}
 \end{figure}
 
 \section{Discussion/Conclusions}
@@ -208,11 +218,9 @@ As we can see from the description of Fig. \ref{fig:network_visualization}, the 
 
 Looking at Fig. \ref{fig:degree_frequencies}, \ref{fig:vote_ranks}, and \ref{fig:centralities}, we can easily reach the conclusion that there are clear hubs in the network. This is because there are a number of developers such as the developer with the maximum degree of 9458 and extraordinary centrality values such as the nodes in the top right of Fig. \ref{fig:centralities}. This is in comparison to most nodes that can barely reach 10 connections and centrality in the bottom portion of Fig. \ref{fig:centralities}. If we were to define an intuitive definition of the degree to which clear hubs exist as the one minus average degree over the maximum degree, we get a score of $\frac{9458}{15.3} \approx 618.2$. This articulates that the largest hub has a degree approximately times greater than the average degree. Obviously, this shows that there are clearly famous or extraordinarily well-connected developers in the network compared to the rest of the developers. This fits our original assumption that these types of developers would exist because GitHub is a social network, where this phenomenon is extremely common.
 
-%\subsection{How does the number of distinct communities and their size scale %with the numbers of developers and connections}
-%
-%Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor %incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis %nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. %Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu %fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in %culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit %amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore %et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation %ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor %in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla %pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui %officia deserunt mollit anim id est laborum.
+\subsection{Is the Network Very Cohesive. That Is, Are Most Developers Part of the Same Large Community} Yes, as I expected, the network is fairly cohesive. Referring to Fig. \ref{fig:community_table}, the top three out of 364 communities in the network compromise $\frac{13972 + 11342 + 8046}{37700} \approx 88.5\%$ of the nodes in the network. In addition, the top three out of communities in the network compromise $\frac{109267+71546+25621}{289003} \approx 71.4\%$ of the edges in the network. This discovery might point towards the idea that most developers tend to have many shared interests and shared relationships, which is why they form such large communities. Or, it might suggest that there is set of extremely popular developers that strongly glue the bulk the developers together into a small amount of detectable communities. This finding also reasonably confirms the hypothesis that there would be large number of small communities that deviate from the large communities. 
 
-\subsection{Opportunities for Future Research} Additional future research could be done on finding the exact communities, motifs, and effective sizes of the developers in the network. These types of analysis weren't included in this paper because they were too computationally intensive for my hardware to process in a reasonable timeframe (less than 48 hours of continuous runtime). By finding the motifs and communities of the network, recurrent and significant subgraphs patterns could be found in the network \cite{wikipediamotif}. These structures might provide some functional information about developer interactions \cite{wikipediamotif}. Analyzing the effective size of the developers could articulate how non-redundant the connections of a developer are \cite{networkxeffectivesize}. This is, in my opinion, an important point of information for this network. Most people make connections by only going through a 2 to 3 hops in terms of relationship edges. That is, most new connections are made with people close to us or people we already have a relationship with. Thus, getting finding this information would confirm whether or not this assumption about how new relationships or connections are formed is true for developer relationships. 
+\subsection{Opportunities for Future Research} Additional future research could be done on finding the exact motifs and effective sizes of the developers in the network. These types of analysis weren't included in this paper because they were too computationally intensive for my hardware to process in a reasonable timeframe (less than 48 hours of continuous runtime). By finding the motifs of the network, recurrent and significant subgraphs patterns could be found in the network \cite{wikipediamotif}. These structures might provide some functional information about developer interactions \cite{wikipediamotif}. Analyzing the effective size of the developers could articulate how non-redundant the connections of a developer are \cite{networkxeffectivesize}. This is, in my opinion, an important point of information for this network. Most people make connections by only going through a 2 to 3 hops in terms of relationship edges. That is, most new connections are made with people close to us or people we already have a relationship with. Thus, getting finding this information would confirm whether or not this assumption about how new relationships or connections are formed is true for developer relationships. 
 
 \acknow{This research article was completed in Fall 2022 as part of graded course work for MTH 450: Network Theory at the State University of New York at Buffalo taught under Professor Dr. Naoki Masuda.
 }
